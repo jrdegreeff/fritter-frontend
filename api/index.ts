@@ -6,16 +6,19 @@ import logger from 'morgan';
 import http from 'http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import MongoStore from 'connect-mongo';
 import * as userValidator from '../server/user/middleware';
 import {userRouter} from '../server/user/router';
 import {freetRouter} from '../server/freet/router';
-import MongoStore from 'connect-mongo';
+import {followRouter} from '../server/follow/router';
+import {feedRouter} from '../server/feed/router';
+import {threadRouter} from '../server/thread/router';
 
 // Load environmental variables
 dotenv.config({});
 
 // Connect to mongoDB
-const mongoConnectionUrl = process.env.MONGO_SRV;
+const mongoConnectionUrl = process.env.MONGO_SRV?.replace('<password>', process.env.PASSWORD ?? '') ?? '';
 if (!mongoConnectionUrl) {
   throw new Error('Please add the MongoDB connection SRV as \'MONGO_SRV\'');
 }
@@ -35,7 +38,7 @@ mongoose.connection.on('error', err => {
   console.error(err);
 });
 
-// Initalize an express app
+// Initialize an express app
 const app = express();
 
 // Set the port
@@ -70,6 +73,9 @@ app.use(userValidator.isCurrentSessionUserExists);
 // Add routers from routes folder
 app.use('/api/users', userRouter);
 app.use('/api/freets', freetRouter);
+app.use('/api/follows', followRouter);
+app.use('/api/feeds', feedRouter);
+app.use('/api/threads', threadRouter);
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {

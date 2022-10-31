@@ -1,7 +1,10 @@
 import type {Request, Response} from 'express';
 import express from 'express';
-import FreetCollection from '../freet/collection';
 import UserCollection from './collection';
+import FreetCollection from '../freet/collection';
+import FollowCollection from '../follow/collection';
+import FeedCollection from '../feed/collection';
+import ThreadCollection from '../thread/collection';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
 
@@ -68,7 +71,7 @@ router.post(
  * @name DELETE /api/users/session
  *
  * @return - None
- * @throws {403} - If user is not logged in
+ * @throws {401} - If user is not logged in
  *
  */
 router.delete(
@@ -107,6 +110,8 @@ router.post(
   ],
   async (req: Request, res: Response) => {
     const user = await UserCollection.addOne(req.body.username, req.body.password);
+    await FollowCollection.addOne(user._id);
+    await FeedCollection.addOne(user._id, "Following");
     req.session.userId = user._id.toString();
     res.status(201).json({
       message: `Your account was created successfully. You have been logged in as ${user.username}`,
@@ -123,7 +128,7 @@ router.post(
  * @param {string} username - The user's new username
  * @param {string} password - The user's new password
  * @return {UserResponse} - The updated user
- * @throws {403} - If user is not logged in
+ * @throws {401} - If user is not logged in
  * @throws {409} - If username already taken
  * @throws {400} - If username or password are not of the correct format
  */
@@ -151,7 +156,7 @@ router.patch(
  * @name DELETE /api/users
  *
  * @return {string} - A success message
- * @throws {403} - If the user is not logged in
+ * @throws {401} - If the user is not logged in
  */
 router.delete(
   '/',
@@ -161,7 +166,10 @@ router.delete(
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     await UserCollection.deleteOne(userId);
-    await FreetCollection.deleteMany(userId);
+    await FollowCollection.deleteOne(userId);
+    await FeedCollection.deleteMany(userId);
+    await ThreadCollection.deleteMany(userId);
+    await FreetCollection.deleteMany(userId);  // this needs to happen last
     req.session.userId = undefined;
     res.status(200).json({
       message: 'Your account has been deleted successfully.'

@@ -122,27 +122,53 @@ const isUserLoggedOut = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-/**
- * Checks if a user with userId as author id in req.query exists
- */
-const isAuthorExists = async (req: Request, res: Response, next: NextFunction) => {
-  if (!req.query.author) {
+const isUserExists = async (username: string, res: Response, next: NextFunction) => {
+  if (!username) {
     res.status(400).json({
-      error: 'Provided author username must be nonempty.'
+      error: 'Provided username must be nonempty.'
     });
     return;
   }
 
-  const user = await UserCollection.findOneByUsername(req.query.author as string);
+  const user = await UserCollection.findOneByUsername(username);
   if (!user) {
     res.status(404).json({
-      error: `A user with username ${req.query.author as string} does not exist.`
+      error: `A user with username ${username} does not exist.`
     });
     return;
   }
 
   next();
 };
+
+/**
+ * Checks if a user with username as author in req.query exists
+ */
+const isAuthorExists = async (req: Request, res: Response, next: NextFunction) => {
+  isUserExists((req.query.author as string) ?? '', res, next);
+};
+
+/**
+ * Checks if a user with username as username in req.query exists
+ */
+const isQueryUsernameExists = async (req: Request, res: Response, next: NextFunction) => {
+  isUserExists((req.query.username as string) ?? '', res, next);
+};
+
+/**
+ * Checks if a user with username as username in req.body exists
+ */
+const isBodyUsernameExists = async (req: Request, res: Response, next: NextFunction) => {
+  isUserExists((req.body.username as string) ?? '', res, next);
+};
+
+/**
+ * Checks if a user with username as username in req.params exists
+ */
+const isParamsUsernameExists = async (req: Request, res: Response, next: NextFunction) => {
+  isUserExists((req.params.username as string) ?? '', res, next);
+};
+
 
 export {
   isCurrentSessionUserExists,
@@ -151,6 +177,9 @@ export {
   isUsernameNotAlreadyInUse,
   isAccountExists,
   isAuthorExists,
+  isQueryUsernameExists,
+  isBodyUsernameExists,
+  isParamsUsernameExists,
   isValidUsername,
   isValidPassword
 };

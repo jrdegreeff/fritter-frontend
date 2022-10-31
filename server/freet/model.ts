@@ -8,20 +8,22 @@ import type {User} from '../user/model';
  */
 
 // Type definition for Freet on the backend
-export type Freet = {
+type Freet = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   authorId: Types.ObjectId;
   dateCreated: Date;
+  parent: Types.ObjectId;
   content: string;
-  dateModified: Date;
+  // dateModified: Date;
 };
 
 export type PopulatedFreet = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   authorId: User;
   dateCreated: Date;
+  parent: Types.ObjectId
   content: string;
-  dateModified: Date;
+  // dateModified: Date;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -40,16 +42,18 @@ const FreetSchema = new Schema<Freet>({
     type: Date,
     required: true
   },
+  // The parent freet of the freet
+  parent: Schema.Types.ObjectId,
   // The content of the freet
   content: {
     type: String,
     required: true
   },
   // The date the freet was modified
-  dateModified: {
-    type: Date,
-    required: true
-  }
+  // dateModified: {
+  //   type: Date,
+  //   required: true
+  // }
 });
 
 const FreetModel = model<Freet>('Freet', FreetSchema);
