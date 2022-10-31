@@ -13,6 +13,7 @@
         v-if="$store.state.username === freet.author"
         class="actions"
       >
+        <!--
         <button
           v-if="editing"
           @click="submitEdit"
@@ -31,6 +32,7 @@
         >
           ✏️ Edit
         </button>
+        -->
         <button @click="deleteFreet">
           🗑️ Delete
         </button>
@@ -49,8 +51,9 @@
       {{ freet.content }}
     </p>
     <p class="info">
-      Posted at {{ freet.dateModified }}
-      <i v-if="freet.edited">(edited)</i>
+      <!-- Posted at {{ freet.dateModified }} -->
+      Posted at {{ freet.dateCreated }}
+      <!-- <i v-if="freet.edited">(edited)</i> -->
     </p>
     <section class="alerts">
       <article
