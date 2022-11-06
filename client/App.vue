@@ -1,18 +1,22 @@
 <template>
   <div id="app">
-    <header>
+    <div id="app-row">
       <NavBar />
-    </header>
-    <router-view />
+      <div id="content">
+        <Header />
+        <router-view />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import Header from '@/components/common/Header.vue';
 import NavBar from '@/components/common/NavBar.vue';
 
 export default {
   name: 'App',
-  components: {NavBar},
+  components: {Header, NavBar},
   beforeCreate() {
     // Sync stored username to current session
     fetch('/api/users/session', {
@@ -42,8 +46,31 @@ body {
   font-size: 1.2em;
 }
 
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#app-row {
+  display: flex;
+  flex-grow: 1;
+}
+
+#content {
+  flex-grow: 1;
+}
+
+nav {
+  padding: 0em 2em;
+}
+
 main {
-  padding: 0 5em 5em;
+  padding: 2em 2em;
+}
+
+a {
+  color: inherit;
 }
 
 .alerts {

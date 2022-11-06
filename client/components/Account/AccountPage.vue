@@ -33,6 +33,9 @@ export default {
     ChangePasswordForm,
     DeleteAccountForm,
     LogoutForm
-  }
+  },
+  mounted() {
+    this.$store.commit('setTitle', 'Account');
+  },
 };
 </script>
