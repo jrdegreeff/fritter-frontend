@@ -2,17 +2,15 @@
 <!-- We've tagged some elements with classes; consider writing CSS using those classes to style them... -->
 
 <template>
-  <article
-    class="freet"
-  >
+  <article class="freet">
     <header>
       <h3 class="author">
         @{{ freet.author }}
       </h3>
-      <div
-        v-if="$store.state.username === freet.author"
-        class="actions"
-      >
+      <div class="actions">
+        <button @click="reply">
+          ↪️ Reply
+        </button>
         <!--
         <button
           v-if="editing"
@@ -21,19 +19,22 @@
           ✅ Save changes
         </button>
         <button
-          v-if="editing"
+          v-if="$store.state.username === freet.author && editing"
           @click="stopEditing"
         >
           🚫 Discard changes
         </button>
         <button
-          v-if="!editing"
+          v-if="$store.state.username === freet.author && !editing"
           @click="startEditing"
         >
           ✏️ Edit
         </button>
         -->
-        <button @click="deleteFreet">
+        <button
+          v-if="$store.state.username === freet.author"
+          @click="deleteFreet"
+        >
           🗑️ Delete
         </button>
       </div>
@@ -85,6 +86,9 @@ export default {
     };
   },
   methods: {
+    reply() {
+      this.$router.push(`/freet/${this.freet._id}`);
+    },
     startEditing() {
       /**
        * Enables edit mode on this freet.
@@ -174,5 +178,6 @@ export default {
     border: 1px solid #111;
     padding: 20px;
     position: relative;
+    margin-bottom: -1px;
 }
 </style>

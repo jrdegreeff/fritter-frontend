@@ -29,7 +29,7 @@ export default {
           this.value = ''; // Clear filter to show all users' freets
           this.$store.commit('refreshFreets');
         } else {
-          // Otherwise reset to previous fitler
+          // Otherwise reset to previous filter
           this.value = this.$store.state.filter;
         }
 

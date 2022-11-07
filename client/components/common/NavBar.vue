@@ -20,7 +20,7 @@
       v-else
       to="/login"
     >
-      Login
+      Log in
     </router-link>
   </nav>
 </template>

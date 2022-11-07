@@ -51,6 +51,27 @@ router.get(
 );
 
 /**
+ * Get freet by id.
+ *
+ * @name GET /api/freets/:id
+ *
+ * @throws {404} - If the freetId is not valid
+ * @return {FreetResponse} - the freet
+ */
+router.get(
+  '/:freetId?',
+  [
+    freetValidator.isParamsFreetExists
+  ],
+  async (req: Request, res: Response) => {
+    const freet = await FreetCollection.findOne(req.params.freetId);
+    res.status(200).json({
+      freet: util.constructFreetResponse(freet)
+    });
+  }
+);
+
+/**
  * Create a new freet.
  *
  * @name POST /api/freets

@@ -69,6 +69,29 @@ main {
   padding: 2em 2em;
 }
 
+section + hr {
+  margin: 1rem 0;
+  width: 102%;
+  transform: translateX(-1%);
+}
+
+section > header {
+  margin-bottom: 1rem;
+}
+
+section > header:last-child {
+  margin-bottom: 0;
+}
+
+header > h1,
+header > h2,
+header > h3,
+header > h4,
+header > h5,
+header > h6 {
+  margin: 0;
+}
+
 a {
   color: inherit;
 }

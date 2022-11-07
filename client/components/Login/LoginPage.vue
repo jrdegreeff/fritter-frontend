@@ -9,12 +9,14 @@
       </header>
       <RegisterForm />
     </section>
+    <hr/>
     <section>
       <header>
         <h2>Have an account?</h2>
       </header>
       <LoginForm />
     </section>
+    <hr/>
   </main>
 </template>
 

@@ -3,41 +3,30 @@
 <template>
   <main>
     <section v-if="$store.state.username">
-      <header>
-        <h2>Welcome @{{ $store.state.username }}</h2>
-      </header>
       <CreateFreetForm />
     </section>
     <section v-else>
       <header>
-        <h2>Welcome to Fritter!</h2>
-      </header>
-      <article>
         <h3>
-          <router-link to="/login">Sign in</router-link>
-          <!-- to create, edit, and delete freets. -->
-          to post freets and create custom feeds.
+          <router-link to="/login">Log in</router-link> to post freets and create custom feeds.
         </h3>
-      </article>
+      </header>
     </section>
+    <hr/>
     <section>
       <header>
-        <div class="left">
-          <h2>
-            Viewing all freets
-            <span v-if="$store.state.filter">
-              by @{{ $store.state.filter }}
-            </span>
-          </h2>
-        </div>
-        <div class="right">
-          <GetFreetsForm
-            ref="getFreetsForm"
-            value="author"
-            placeholder="🔍 Filter by author (optional)"
-            button="🔄 Get freets"
-          />
-        </div>
+        <h2>
+          Viewing all freets
+          <span v-if="$store.state.filter">
+            by @{{ $store.state.filter }}
+          </span>
+        </h2>
+        <GetFreetsForm
+          ref="getFreetsForm"
+          value="author"
+          placeholder="🔍 Filter by author (optional)"
+          button="🔄 Get freets"
+        />
       </header>
       <section
         v-if="$store.state.freets.length"
@@ -54,6 +43,7 @@
         <h3>No freets found.</h3>
       </article>
     </section>
+    <hr/>
   </main>
 </template>
 
@@ -73,24 +63,9 @@ export default {
 </script>
 
 <style scoped>
-section {
+header {
   display: flex;
-  flex-direction: column;
-}
-
-header, header > * {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-button {
-    margin-right: 10px;
-}
-
-section .scrollbox {
-  flex: 1 0 50vh;
-  padding: 3%;
-  overflow-y: scroll;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

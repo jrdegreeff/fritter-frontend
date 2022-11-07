@@ -10,6 +10,7 @@
       <ChangeUsernameForm />
       <ChangePasswordForm />
     </section>
+    <hr/>
     <section>
       <header>
         <h2>Account management</h2>
@@ -17,6 +18,7 @@
       <LogoutForm />
       <DeleteAccountForm />
     </section>
+    <hr/>
   </main>
 </template>
 

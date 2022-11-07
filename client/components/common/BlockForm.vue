@@ -122,8 +122,8 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 14px;
   position: relative;
+  margin-bottom: -1px;
 }
 
 article > div {
