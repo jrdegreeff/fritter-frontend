@@ -32,12 +32,20 @@
       {{ freet.content }}
     </p>
     <div class="actions">
-        <button @click="reply">
+        <button
+          @click="viewThread"
+        >
+          🧵 View Thread
+        </button>
+        <button
+          v-if="$store.state.username"
+          @click="reply"
+        >
           ↪️ Reply
         </button>
         <!--
         <button
-          v-if="editing"
+          v-if="$store.state.username === freet.author && editing"
           @click="submitEdit"
         >
           ✅ Save changes
@@ -92,6 +100,9 @@ export default {
     };
   },
   methods: {
+    viewThread() {
+      this.$router.push(`/thread/${this.freet._id}`);
+    },
     reply() {
       this.$router.push(`/freet/${this.freet._id}`);
     },

@@ -4,7 +4,8 @@
       <NavBar />
       <div id="content">
         <Header />
-        <router-view />
+        <!-- https://stackoverflow.com/questions/40404787/best-practice-for-reacting-to-params-changes-with-vue-router -->
+        <router-view :key="$route.fullPath" />
       </div>
     </div>
   </div>

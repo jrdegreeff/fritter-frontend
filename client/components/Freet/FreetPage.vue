@@ -54,9 +54,6 @@ export default {
   async mounted() {
     this.$store.commit('setTitle', {title: 'Freet', enableBack: true});
     await this.getFreet();
-  },
-  async updated() {
-    await this.getFreet();
   }
 };
 </script>

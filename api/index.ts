@@ -80,7 +80,7 @@ app.use('/api/threads', threadRouter);
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {
   res.status(404).json({
-    error: 'Page not found'
+    error: 'endpoint not found'
   });
 });
 

@@ -32,9 +32,24 @@ class ThreadCollection {
      */
     static async findOne(freetId: Types.ObjectId | string): Promise<HydratedDocument<PopulatedThread>> {
         return await ThreadModel.findOne({freet: freetId})
-                                .populate('freet')
-                                .populate('lineage')
-                                .populate('children.freet');
+                                .populate({
+                                    path: 'freet',
+                                    populate: {
+                                        path: 'authorId'
+                                    }
+                                })
+                                .populate({
+                                    path: 'lineage',
+                                    populate: {
+                                        path: 'authorId'
+                                    }
+                                })
+                                .populate({
+                                    path: 'children.freet',
+                                    populate: {
+                                        path: 'authorId'
+                                    }
+                                });
     }
 
     /**
