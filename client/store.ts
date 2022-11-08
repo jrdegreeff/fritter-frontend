@@ -10,14 +10,16 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     title: "",
+    enableBack: false,
     filter: null, // Username to filter shown freets by (null = show all)
     freets: [], // All freets created in the app
     username: null, // Username of the logged in user
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
-    setTitle(state, title) {
-      state.title = title;
+    setTitle(state, payload) {
+      state.title = payload.title;
+      state.enableBack = payload.enableBack;
     },
     alert(state, payload) {
       /**

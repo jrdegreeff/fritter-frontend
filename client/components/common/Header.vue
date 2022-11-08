@@ -1,5 +1,12 @@
 <template>
   <header>
+    <h1
+      v-if="$store.state.enableBack"
+      @click="() => $router.go(-1)"
+      class="back"
+    >
+      ←
+    </h1>
     <h1> {{ $store.state.title }} </h1>
     <section class="alerts">
       <article
@@ -26,7 +33,16 @@ h1 {
   font-size: 2rem;
 }
 
+.back {
+  cursor: pointer;
+  text-align: center;
+  width: 2.5rem;
+  border: 1px dotted;
+  border-radius: 1rem;
+  margin-right: 1rem;
+}
+
 .alerts {
-    width: 25%;
+  width: 25%;
 }
 </style>

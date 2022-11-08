@@ -37,7 +37,7 @@ export default {
     LogoutForm
   },
   mounted() {
-    this.$store.commit('setTitle', 'Account');
+    this.$store.commit('setTitle', {title: 'Account', enableBack: false});
   },
 };
 </script>

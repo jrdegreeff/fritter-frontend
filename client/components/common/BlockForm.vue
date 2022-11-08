@@ -11,9 +11,20 @@
         v-for="field in fields"
         :key="field.id"
       >
-        <label :for="field.id">{{ field.label }}:</label>
+        <label
+          v-if="!field.hidden"
+          :for="field.id"
+        >
+          {{ field.label }}:
+        </label>
+        <input
+          v-if="field.hidden"
+          type=hidden
+          :name="field.id"
+          :value="field.value"
+        >
         <textarea
-          v-if="field.id === 'content'"
+          v-else-if="field.id === 'content'"
           :name="field.id"
           :value="field.value"
           @input="field.value = $event.target.value"

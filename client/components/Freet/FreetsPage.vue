@@ -56,7 +56,7 @@ export default {
   name: 'FreetPage',
   components: {FreetComponent, GetFreetsForm, CreateFreetForm},
   mounted() {
-    this.$store.commit('setTitle', 'Home');
+    this.$store.commit('setTitle', {title: 'Home', enableBack: false});
     this.$refs.getFreetsForm.submit();
   },
 };

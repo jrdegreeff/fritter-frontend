@@ -1,11 +1,16 @@
 <template>
   <main>
     <section>
-      <FreetComponent :freet="freet" />
+      <FreetComponent
+        :freet="freet"
+      />
     </section>
     <hr/>
     <section v-if="$store.state.username">
-      <CreateFreetForm />
+      <CreateFreetForm
+        title="Reply to freet"
+        :parent="$route.params.freetid"
+      />
     </section>
     <section v-else>
       <header>
@@ -47,8 +52,11 @@ export default {
     }
   },
   async mounted() {
+    this.$store.commit('setTitle', {title: 'Freet', enableBack: true});
     await this.getFreet();
-    this.$store.commit('setTitle', `Freet by @${this.freet.author}`);
   },
+  async updated() {
+    await this.getFreet();
+  }
 };
 </script>

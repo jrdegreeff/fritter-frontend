@@ -4,10 +4,34 @@
 <template>
   <article class="freet">
     <header>
-      <h3 class="author">
+      <span class="author">
         @{{ freet.author }}
-      </h3>
-      <div class="actions">
+      </span>
+      <span class="date">
+        {{ freet.dateCreated }}
+        <!-- Posted at {{ freet.dateModified }} -->
+        <!-- <i v-if="freet.edited">(edited)</i> -->
+      </span>
+      <span
+        v-if="freet.parent"
+        class="parent"
+      >
+        (<router-link :to="`/freet/${freet.parent}`">in response to</router-link>)
+      </span>
+    </header>
+    <textarea
+      v-if="editing"
+      class="content"
+      :value="draft"
+      @input="draft = $event.target.value"
+    />
+    <p
+      v-else
+      class="content"
+    >
+      {{ freet.content }}
+    </p>
+    <div class="actions">
         <button @click="reply">
           ↪️ Reply
         </button>
@@ -38,24 +62,6 @@
           🗑️ Delete
         </button>
       </div>
-    </header>
-    <textarea
-      v-if="editing"
-      class="content"
-      :value="draft"
-      @input="draft = $event.target.value"
-    />
-    <p
-      v-else
-      class="content"
-    >
-      {{ freet.content }}
-    </p>
-    <p class="info">
-      <!-- Posted at {{ freet.dateModified }} -->
-      Posted at {{ freet.dateCreated }}
-      <!-- <i v-if="freet.edited">(edited)</i> -->
-    </p>
     <section class="alerts">
       <article
         v-for="(status, alert, index) in alerts"
@@ -175,9 +181,21 @@ export default {
 
 <style scoped>
 .freet {
-    border: 1px solid #111;
-    padding: 20px;
-    position: relative;
-    margin-bottom: -1px;
+  border: 1px solid #111;
+  padding: 20px;
+  position: relative;
+  margin-bottom: -1px;
+}
+
+span {
+  margin-right: 1rem;
+}
+
+.author {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.3rem;
+  border: 1px solid;
+  border-radius: 1.2rem;
 }
 </style>
