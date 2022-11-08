@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header class="layout">
     <h1
       v-if="$store.state.enableBack"
       @click="() => $router.go(-1)"
@@ -22,8 +22,6 @@
 
 <style scoped>
 header {
-  padding: 2em 2em;
-  background-color: #ccc;
   display: flex;
   align-items: center;
   position: relative;

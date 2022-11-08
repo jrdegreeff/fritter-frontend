@@ -1,23 +1,25 @@
 <template>
   <div id="app">
-    <div id="app-row">
-      <NavBar />
-      <div id="content">
-        <Header />
-        <!-- https://stackoverflow.com/questions/40404787/best-practice-for-reacting-to-params-changes-with-vue-router -->
-        <router-view :key="$route.fullPath" />
-      </div>
+    <NavBar />
+    <div id="content">
+      <Header />
+      <!-- https://stackoverflow.com/questions/40404787/best-practice-for-reacting-to-params-changes-with-vue-router -->
+      <router-view :key="$route.fullPath" />
+      <Footer />
     </div>
+    <SideBar />
   </div>
 </template>
 
 <script>
-import Header from '@/components/common/Header.vue';
-import NavBar from '@/components/common/NavBar.vue';
+import NavBar from '@/components/layout/NavBar.vue';
+import SideBar from '@/components/layout/SideBar.vue';
+import Header from '@/components/layout/Header.vue';
+import Footer from '@/components/layout/Footer.vue';
 
 export default {
   name: 'App',
-  components: {Header, NavBar},
+  components: {NavBar, SideBar, Header, Footer},
   beforeCreate() {
     // Sync stored username to current session
     fetch('/api/users/session', {
@@ -47,33 +49,42 @@ body {
   font-size: 1.2em;
 }
 
-#app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+.layout {
+  background-color: #ccc;
 }
 
-#app-row {
-  display: flex;
+#app {
   flex-grow: 1;
+  display: flex;
+}
+
+#app > .layout {
+  padding: 1em 2em;
+}
+
+#app > .layout > section {
+  padding: 1em 0em;
 }
 
 #content {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-nav {
-  padding: 0em 2em;
+#content > .layout {
+  padding: 2em 2em;
 }
 
-main {
+#content > main {
+  flex-grow: 1;
   padding: 2em 2em;
 }
 
 section + hr {
   margin: 1rem 0;
-  width: 102%;
-  transform: translateX(-1%);
+  width: calc(100% + 2rem);
+  transform: translateX(-1rem);
 }
 
 section > header {
@@ -98,31 +109,31 @@ a {
 }
 
 .alerts {
-    position: absolute;
-    z-index: 99;
-    bottom: 0;
-    top: 100%;
-    left: 50%;
-    transform: translate(-50%, 10%);
-    width: 100%;
-    text-align: center;
+  position: absolute;
+  z-index: 99;
+  bottom: 0;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 10%);
+  width: 100%;
+  text-align: center;
 }
 
 .alerts article {
-    border-radius: 5px;
-    padding: 10px 20px;
-    color: #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: #fff;
 }
 
 .alerts p {
-    margin: 0;
+  margin: 0;
 }
 
 .alerts .error {
-    background-color: rgb(166, 23, 33);
+  background-color: rgb(166, 23, 33);
 }
 
 .alerts .success {
-    background-color: rgb(45, 135, 87);
+  background-color: rgb(45, 135, 87);
 }
 </style>
