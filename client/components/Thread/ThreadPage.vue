@@ -45,7 +45,7 @@ import FreetComponent from '@/components/Freet/FreetComponent.vue';
 import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
 
 export default {
-  name: 'FreetPage',
+  name: 'ThreadPage',
   components: {FreetComponent, CreateFreetForm},
   data() {
     return {

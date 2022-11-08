@@ -53,7 +53,7 @@ import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
 import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
 
 export default {
-  name: 'FreetPage',
+  name: 'HomePage',
   components: {FreetComponent, GetFreetsForm, CreateFreetForm},
   mounted() {
     this.$store.commit('setTitle', {title: 'Home', enableBack: false});

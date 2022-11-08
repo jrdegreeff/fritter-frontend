@@ -4,18 +4,13 @@
 <template>
   <article class="freet">
     <header>
-      <span class="author">
-        @{{ freet.author }}
-      </span>
-      <span class="date">
+      <UserTag :user="freet.author" />
+      <span>
         {{ freet.dateCreated }}
         <!-- Posted at {{ freet.dateModified }} -->
         <!-- <i v-if="freet.edited">(edited)</i> -->
       </span>
-      <span
-        v-if="freet.parent"
-        class="parent"
-      >
+      <span v-if="freet.parent">
         (<router-link :to="`/freet/${freet.parent}`">in response to</router-link>)
       </span>
     </header>
@@ -83,8 +78,11 @@
 </template>
 
 <script>
+import UserTag from '@/components/common/UserTag.vue';
+
 export default {
   name: 'FreetComponent',
+  components: {UserTag},
   props: {
     // Data from the stored freet
     freet: {
@@ -200,13 +198,5 @@ export default {
 
 span {
   margin-right: 1rem;
-}
-
-.author {
-  font-size: 1.2rem;
-  font-weight: bold;
-  padding: 0.3rem;
-  border: 1px solid;
-  border-radius: 1.2rem;
 }
 </style>
