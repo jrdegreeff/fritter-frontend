@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main v-if="freet._id">
     <section>
       <FreetComponent
         :freet="freet"
