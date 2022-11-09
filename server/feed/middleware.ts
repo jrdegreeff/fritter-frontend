@@ -59,21 +59,21 @@ const isValidFeedPatch = async (req: Request, res: Response, next: NextFunction)
         return;
     }
 
-    if (req.body.add && !Array.isArray(JSON.parse(req.body.add))) {
+    if (req.body.add && !Array.isArray(req.body.add)) {
         res.status(400).json({
             error: 'add must be an array'
         });
         return;
     }
 
-    if (req.body.remove && !Array.isArray(JSON.parse(req.body.remove))) {
+    if (req.body.remove && !Array.isArray(req.body.remove)) {
         res.status(400).json({
             error: 'remove must be an array'
         });
         return;
     }
 
-    const add = (req.body.add && JSON.parse(req.body.add) as Array<string>) || [];
+    const add = (req.body.add || []) as Array<string>;
     for (const source of add) {
         if (await UserCollection.findOneByUsername(source) === null) {
             res.status(404).json({
@@ -89,7 +89,7 @@ const isValidFeedPatch = async (req: Request, res: Response, next: NextFunction)
         }
     }
 
-    const remove = (req.body.remove && JSON.parse(req.body.remove) as Array<string>) || [];
+    const remove = (req.body.remove || []) as Array<string>;
     for (const source of remove) {
         if (await UserCollection.findOneByUsername(source) === null) {
             res.status(404).json({

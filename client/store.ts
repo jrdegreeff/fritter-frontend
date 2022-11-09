@@ -32,7 +32,7 @@ const store = new Vuex.Store({
         Vue.delete(state.alerts, payload.message);
       }, 3000);
     },
-    async setUsername(state, username) {
+    setUsername(state, username) {
       /**
        * Update the stored username to the specified one.
        * @param username - new username to set
@@ -82,8 +82,9 @@ const store = new Vuex.Store({
       const res = await r.json();
       if (!r.ok) {
         commit('alert', {message: res.error, status: 'error'});
+      } else {
+        await dispatch('refreshFeeds');
       }
-      await dispatch('refreshFeeds');
     },
     async unfollow({commit, dispatch}, user) {
       commit('unfollow', user);
@@ -93,8 +94,9 @@ const store = new Vuex.Store({
       const res = await r.json();
       if (!r.ok) {
         commit('alert', {message: res.error, status: 'error'});
+      } else {
+        await dispatch('refreshFeeds');
       }
-      await dispatch('refreshFeeds');
     },
     async refreshFollowing({commit, state}) {
       if (state.username) {
@@ -103,6 +105,24 @@ const store = new Vuex.Store({
         commit('updateFollowing', new Set(res.following));
       } else {
         commit('updateFollowing', new Set());
+      }
+    },
+    async updateFeed({commit, dispatch}, {user, name, action}) {
+      const add = action ? [user] : [];
+      const remove = action ? [] : [user];
+      const r = await fetch(`api/feeds/${name}`, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({add, remove})
+      });
+      const res = await r.json();
+      if (!r.ok) {
+        commit('alert', {message: res.error, status: 'error'});
+      } else {
+        if (name === 'Following') {
+          await dispatch('refreshFollowing');
+        }
+        await dispatch('refreshFeeds');
       }
     },
     async refreshFeeds({commit, state}) {

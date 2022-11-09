@@ -26,6 +26,7 @@ export default {
         {id: 'parent', hidden: true, value: this.parent}
       ],
       refreshFreets: true,
+      refreshFeeds: true,
       callback: () => {
         const message = 'Successfully created freet!';
         if (this.parent) {

@@ -46,6 +46,28 @@
       />
     </section>
     <hr/>
+    <section>
+      <header>
+        <h2>
+          Add to feeds
+        </h2>
+      </header>
+      <ul>
+        <li
+          v-for="feed in $store.state.feeds instanceof Map ? $store.state.feeds.values() : []"
+          :key="feed.name"
+        >
+          <input
+            type="checkbox"
+            :value="feed.name"
+            :checked="feed.sources instanceof Array && feed.sources.includes(user)"
+            @click="updateFeed"
+          />
+          <span>{{feed.name}}</span>
+        </li>
+      </ul>
+    </section>
+    <hr/>
   </main>
 </template>
   
@@ -86,6 +108,14 @@ export default {
     async unfollow() {
       await this.$store.dispatch('unfollow', this.user);
       await this.getFollows();
+    },
+    async updateFeed(e) {
+      await this.$store.dispatch('updateFeed', {
+        user: this.user,
+        name: e.target.value,
+        action: e.target.checked
+      });
+      await this.getFollows();
     }
   },
   async mounted() {
@@ -103,6 +133,20 @@ header {
 }
 
 span {
+  margin-right: 1rem;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin: 0.5rem 0rem;
+}
+
+li > input {
   margin-right: 1rem;
 }
 </style>

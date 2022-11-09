@@ -103,8 +103,8 @@ router.patch(
     feedValidator.isFeedNameExists,
     feedValidator.isValidFeedPatch,
     async (req: Request, res: Response) => {
-        const add = (req.body.add && JSON.parse(req.body.add) as Array<string>) || [];
-        const remove = (req.body.remove && JSON.parse(req.body.remove) as Array<string>) || [];
+        const add = (req.body.add && req.body.add as Array<string>) || [];
+        const remove = (req.body.remove && req.body.remove as Array<string>) || [];
         for (const source of add) {
             await FeedCollection.addSource(req.session.userId, req.params.name, source);
             if (req.params.name === "Following") {

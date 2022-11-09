@@ -177,6 +177,7 @@ export default {
 
         this.editing = false;
         await this.$store.dispatch('refreshFreets');
+        await this.$store.dispatch('refreshFeeds');
 
         params.callback();
       } catch (e) {
