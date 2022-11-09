@@ -47,10 +47,12 @@ body {
   padding: 0;
   margin: 0;
   font-size: 1.2em;
+  color: #000;
+  background-color: #D8E1E9;
 }
 
 .layout {
-  background-color: #ccc;
+  background-color: #B3C5D7;
 }
 
 #app {
