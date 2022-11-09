@@ -18,7 +18,7 @@
         <h2>
           Viewing all freets
           <span v-if="$store.state.filter">
-            by @{{ $store.state.filter }}
+            by <UserTag :user="$store.state.filter" />
           </span>
         </h2>
         <GetFreetsForm
@@ -48,13 +48,14 @@
 </template>
 
 <script>
+import UserTag from '@/components/common/UserTag.vue';
 import FreetComponent from '@/components/Freet/FreetComponent.vue';
 import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
 import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
 
 export default {
   name: 'HomePage',
-  components: {FreetComponent, GetFreetsForm, CreateFreetForm},
+  components: {UserTag, FreetComponent, GetFreetsForm, CreateFreetForm},
   mounted() {
     this.$store.commit('setTitle', {title: 'Home', enableBack: false});
     this.$refs.getFreetsForm.submit();

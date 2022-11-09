@@ -24,9 +24,10 @@ export default {
     // Sync stored username to current session
     fetch('/api/users/session', {
       credentials: 'same-origin' // Sends express-session credentials with request
-    }).then(res => res.json()).then(res => {
+    }).then(res => res.json()).then(async res => {
       const user = res.user;
       this.$store.commit('setUsername', user ? user.username : null);
+      await this.$store.commit('refreshFollowing');
     });
 
     // Clear alerts on page refresh

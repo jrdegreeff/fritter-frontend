@@ -5,6 +5,18 @@
         <h1>
           @{{user}}
         </h1>
+        <button
+          v-if="$store.state.username && $store.state.following instanceof Set && !$store.state.following.has(user)"
+          @click="follow"
+        >
+          Follow
+        </button>
+        <button
+          v-if="$store.state.username && $store.state.following instanceof Set && $store.state.following.has(user)"
+          @click="unfollow"
+        >
+          Unfollow
+        </button>
       </header>
     </section>
     <hr/>
@@ -61,11 +73,43 @@ export default {
         }
         
         this.user = res.user;
-        this.followers = res.followers.concat(["TEST1", "TEST2"]);
-        this.following = res.following.concat(["TEST3", "TEST4"]);
+        this.followers = res.followers;
+        this.following = res.following;
       } catch (e) {
         this.$store.commit('alert', {message: e, status: 'error'});
       }
+    },
+    async follow() {
+      const following = new Set(this.$store.state.following);
+      following.add(this.user);
+      this.$store.commit('setFollowing', following);
+
+      const r = await fetch('api/follows', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: this.user})
+      });
+      const res = await r.json();
+      if (!r.ok) {
+        this.$store.commit('alert', {message: res.error, status: 'error'});
+      }
+
+      await this.getFollows();
+    },
+    async unfollow() {
+      const following = new Set(this.$store.state.following);
+      following.delete(this.user);
+      this.$store.commit('setFollowing', following);
+
+      const r = await fetch(`api/follows/${this.user}`, {
+        method: 'DELETE'
+      });
+      const res = await r.json();
+      if (!r.ok) {
+        this.$store.commit('alert', {message: res.error, status: 'error'});
+      }
+
+      await this.getFollows();
     }
   },
   async mounted() {
@@ -76,7 +120,13 @@ export default {
 </script>
 
 <style scoped>
-  span {
-    margin-right: 1rem;
-  }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+span {
+  margin-right: 1rem;
+}
 </style>

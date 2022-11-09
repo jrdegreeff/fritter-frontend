@@ -108,6 +108,7 @@ export default {
           const text = await r.text();
           const res = text ? JSON.parse(text) : {user: null};
           this.$store.commit('setUsername', res.user ? res.user.username : null);
+          await this.$store.commit('refreshFollowing');
         }
 
         if (this.refreshFreets) {

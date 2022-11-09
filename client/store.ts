@@ -14,6 +14,7 @@ const store = new Vuex.Store({
     filter: null, // Username to filter shown freets by (null = show all)
     freets: [], // All freets created in the app
     username: null, // Username of the logged in user
+    following: new Set(),
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -36,6 +37,18 @@ const store = new Vuex.Store({
        * @param username - new username to set
        */
       state.username = username;
+    },
+    setFollowing(state, following) {
+      state.following = following;
+    },
+    async refreshFollowing(state) {
+      if (state.username) {
+        const url = `/api/follows?username=${state.username}`;
+        const res = await fetch(url).then(async r => r.json());
+        state.following = new Set(res.following);
+      } else {
+        state.following = new Set();
+      }
     },
     updateFilter(state, filter) {
       /**

@@ -22,7 +22,7 @@ export default {
 span {
   font-size: 1.2rem;
   font-weight: bold;
-  padding: 0.3rem;
+  padding: 0.3rem 0.6rem;
   border: 1px solid;
   border-radius: 1.2rem;
 }
