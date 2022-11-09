@@ -176,7 +176,7 @@ export default {
         }
 
         this.editing = false;
-        this.$store.commit('refreshFreets');
+        await this.$store.dispatch('refreshFreets');
 
         params.callback();
       } catch (e) {

@@ -26,8 +26,7 @@ export default {
       credentials: 'same-origin' // Sends express-session credentials with request
     }).then(res => res.json()).then(async res => {
       const user = res.user;
-      this.$store.commit('setUsername', user ? user.username : null);
-      await this.$store.commit('refreshFollowing');
+      await this.$store.dispatch('setUser', user ? user.username : null);
     });
 
     // Clear alerts on page refresh

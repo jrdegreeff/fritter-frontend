@@ -27,7 +27,7 @@ export default {
           // change their username when you refresh
           this.$store.commit('updateFilter', null);
           this.value = ''; // Clear filter to show all users' freets
-          this.$store.commit('refreshFreets');
+          await this.$store.dispatch('refreshFreets');
         } else {
           // Otherwise reset to previous filter
           this.value = this.$store.state.filter;

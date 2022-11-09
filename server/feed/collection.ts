@@ -39,6 +39,24 @@ class FeedCollection {
     }
 
     /**
+     * Find all of a user's feeds
+     * 
+     * @param userId the id of the user who owns the feeds
+     * @return the populated feeds
+     */
+     static async findMany(userId: Types.ObjectId | string): Promise<HydratedDocument<PopulatedFeed>[]> {
+        return await FeedModel.find({owner: userId})
+                        .populate('owner')
+                        .populate('sources')
+                        .populate({
+                            path: 'items',
+                            populate: {
+                                path: 'authorId'
+                            }
+                        });
+    }
+
+    /**
      * Delete a feed.
      * 
      * @param userId the id of the user who owns the feed

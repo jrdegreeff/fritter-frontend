@@ -13,6 +13,16 @@
             Feeds
           </router-link>
         </h3>
+        <ul>
+          <li
+            v-for="feed in $store.state.feeds instanceof Map ? $store.state.feeds.keys() : []"
+            :key="feed"
+          >
+            <router-link :to="`/feeds/${feed}`">
+              {{feed}}
+            </router-link>
+          </li>
+        </ul>
       </header>
     </section>
     <hr/>
@@ -48,5 +58,10 @@ export default {
 <style scoped>
 section {
   text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
 }
 </style>

@@ -107,12 +107,11 @@ export default {
         if (this.setUsername) {
           const text = await r.text();
           const res = text ? JSON.parse(text) : {user: null};
-          this.$store.commit('setUsername', res.user ? res.user.username : null);
-          await this.$store.commit('refreshFollowing');
+          await this.$store.dispatch('setUser', res.user ? res.user.username : null);
         }
 
         if (this.refreshFreets) {
-          this.$store.commit('refreshFreets');
+          await this.$store.dispatch('refreshFreets');
         }
 
         if (this.callback) {

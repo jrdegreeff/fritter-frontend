@@ -80,35 +80,11 @@ export default {
       }
     },
     async follow() {
-      const following = new Set(this.$store.state.following);
-      following.add(this.user);
-      this.$store.commit('setFollowing', following);
-
-      const r = await fetch('api/follows', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: this.user})
-      });
-      const res = await r.json();
-      if (!r.ok) {
-        this.$store.commit('alert', {message: res.error, status: 'error'});
-      }
-
+      await this.$store.dispatch('follow', this.user);
       await this.getFollows();
     },
     async unfollow() {
-      const following = new Set(this.$store.state.following);
-      following.delete(this.user);
-      this.$store.commit('setFollowing', following);
-
-      const r = await fetch(`api/follows/${this.user}`, {
-        method: 'DELETE'
-      });
-      const res = await r.json();
-      if (!r.ok) {
-        this.$store.commit('alert', {message: res.error, status: 'error'});
-      }
-
+      await this.$store.dispatch('unfollow', this.user);
       await this.getFollows();
     }
   },

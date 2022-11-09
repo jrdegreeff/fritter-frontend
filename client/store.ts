@@ -15,6 +15,7 @@ const store = new Vuex.Store({
     freets: [], // All freets created in the app
     username: null, // Username of the logged in user
     following: new Set(),
+    feeds: new Map(),
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -31,24 +32,24 @@ const store = new Vuex.Store({
         Vue.delete(state.alerts, payload.message);
       }, 3000);
     },
-    setUsername(state, username) {
+    async setUsername(state, username) {
       /**
        * Update the stored username to the specified one.
        * @param username - new username to set
        */
       state.username = username;
     },
-    setFollowing(state, following) {
+    updateFollowing(state, following) {
       state.following = following;
     },
-    async refreshFollowing(state) {
-      if (state.username) {
-        const url = `/api/follows?username=${state.username}`;
-        const res = await fetch(url).then(async r => r.json());
-        state.following = new Set(res.following);
-      } else {
-        state.following = new Set();
-      }
+    follow(state, user) {
+      state.following.add(user);
+    },
+    unfollow(state, user) {
+      state.following.delete(user);
+    },
+    updateFeeds(state, feeds) {
+      state.feeds = feeds;
     },
     updateFilter(state, filter) {
       /**
@@ -63,14 +64,63 @@ const store = new Vuex.Store({
        * @param freets - Freets to store
        */
       state.freets = freets;
+    }
+  },
+  actions: {
+    async setUser({commit, dispatch}, username) {
+      commit('setUsername', username);
+      await dispatch('refreshFollowing');
+      await dispatch('refreshFeeds');
     },
-    async refreshFreets(state) {
+    async follow({commit, dispatch}, user) {
+      commit('follow', user);
+      const r = await fetch('api/follows', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: user})
+      });
+      const res = await r.json();
+      if (!r.ok) {
+        commit('alert', {message: res.error, status: 'error'});
+      }
+      await dispatch('refreshFeeds');
+    },
+    async unfollow({commit, dispatch}, user) {
+      commit('unfollow', user);
+      const r = await fetch(`api/follows/${user}`, {
+        method: 'DELETE'
+      });
+      const res = await r.json();
+      if (!r.ok) {
+        commit('alert', {message: res.error, status: 'error'});
+      }
+      await dispatch('refreshFeeds');
+    },
+    async refreshFollowing({commit, state}) {
+      if (state.username) {
+        const url = `/api/follows?username=${state.username}`;
+        const res = await fetch(url).then(async r => r.json());
+        commit('updateFollowing', new Set(res.following));
+      } else {
+        commit('updateFollowing', new Set());
+      }
+    },
+    async refreshFeeds({commit, state}) {
+      if (state.username) {
+        const url = `/api/feeds`;
+        const res = await fetch(url).then(async r => r.json());
+        commit('updateFeeds', new Map(res.map(f => [f.name, f])));
+      } else {
+        commit('updateFeeds', new Map());
+      }
+    },
+    async refreshFreets({commit, state}) {
       /**
        * Request the server for the currently available freets.
        */
       const url = state.filter ? `/api/users/${state.filter}/freets` : '/api/freets';
       const res = await fetch(url).then(async r => r.json());
-      state.freets = res;
+      commit('updateFreets', res);
     }
   },
   // Store data across page refreshes, only discard on browser close

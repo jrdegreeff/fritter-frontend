@@ -10,6 +10,25 @@ import * as util from './util';
 const router = express.Router();
 
 /**
+ * Get list of all of a user's feeds.
+ * 
+ * @name GET /api/feeds/
+ * 
+ * @return {FeedResponse[]} the sources and posts of all of the user's feeds
+ * 
+ * @throws {401} if the user is not logged in
+ */
+ router.get(
+    '/',
+    userValidator.isUserLoggedIn,
+    async (req: Request, res: Response) => {
+        const feeds = await FeedCollection.findMany(req.session.userId);
+        const response = feeds.map(util.constructFeedResponse);
+        res.status(200).json(response);
+    }
+);
+
+/**
  * Get sources and posts of a feed.
  * 
  * @name GET /api/feeds/:name

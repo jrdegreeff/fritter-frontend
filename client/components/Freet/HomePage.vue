@@ -28,18 +28,14 @@
           button="🔄 Get freets"
         />
       </header>
-      <section
-        v-if="$store.state.freets.length"
-      >
+      <div v-if="$store.state.freets.length">
         <FreetComponent
           v-for="freet in $store.state.freets"
           :key="freet.id"
           :freet="freet"
         />
-      </section>
-      <article
-        v-else
-      >
+      </div>
+      <article v-else>
         <h3>No freets found.</h3>
       </article>
     </section>
