@@ -6,26 +6,28 @@
       </router-link>
     </section>
     <hr/>
-    <section>
+    <section v-if="$store.state.username">
       <header>
         <h3>
           <router-link to="/feeds">
             Feeds
           </router-link>
         </h3>
-        <ul>
-          <li
-            v-for="feed in $store.state.feeds instanceof Map ? $store.state.feeds.keys() : []"
-            :key="feed"
-          >
-            <router-link :to="`/feeds/${feed}`">
-              {{feed}}
-            </router-link>
-          </li>
-        </ul>
       </header>
+      <ul v-if="$store.state.feeds.size">
+        <hr/>
+        <li
+          v-for="feed in $store.state.feeds instanceof Map ? $store.state.feeds.keys() : []"
+          :key="feed"
+        >
+          <router-link :to="`/feeds/${feed}`">
+            {{feed}}
+          </router-link>
+          <hr/>
+        </li>
+      </ul>
     </section>
-    <hr/>
+    <hr v-if="$store.state.username"/>
     <section v-if="$store.state.username">
       <header>
         <h3>
@@ -60,8 +62,17 @@ section {
   text-align: center;
 }
 
+header {
+  margin-bottom: 1.5rem;
+}
+
 ul {
   list-style-type: none;
-  padding: 0;
+  padding: 1rem;
+  border: 1px dotted;
+}
+
+li {
+  margin: 0.5rem 0rem;
 }
 </style>

@@ -60,7 +60,7 @@ router.get(
  * @return {FeedResponse} the created feed
  * 
  * @throws {401} if the user is not logged in
- * @throws {400} if name is empty or a stream of empty spaces
+ * @throws {400} if name is empty or contains invalid characters
  * @throws {409} if the user already has a feed with name name
  */
 router.post(

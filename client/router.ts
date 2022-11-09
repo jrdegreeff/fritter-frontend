@@ -6,7 +6,8 @@ import LoginPage from './components/Login/LoginPage.vue';
 import ProfilePage from './components/Profile/ProfilePage.vue';
 import FreetPage from './components/Freet/FreetPage.vue';
 import ThreadPage from './components/Thread/ThreadPage.vue';
-import ViewFeedPage from './components/Feed/FeedPage.vue';
+import FeedPage from './components/Feed/FeedPage.vue';
+import FeedManagementPage from './components/Feed/FeedManagementPage.vue';
 import NotFound from './NotFound.vue';
 
 Vue.use(VueRouter);
@@ -18,7 +19,8 @@ const routes = [
   {path: '/user/:username', name: 'Profile', component: ProfilePage},
   {path: '/freet/:freetid', name: 'Freet', component: FreetPage},
   {path: '/thread/:freetid', name: 'Thread', component: ThreadPage},
-  {path: '/feeds/:name', name: 'Feed', component: ViewFeedPage},
+  {path: '/feeds/:name', name: 'Feed', component: FeedPage},
+  {path: '/feeds', name: 'Feeds', component: FeedManagementPage},
   {path: '*', name: 'Not Found', component: NotFound}
 ];
 
@@ -34,7 +36,7 @@ router.beforeEach((to, from, next) => {
       return;
     }
 
-    if ((to.name === 'Account' || to.name === 'Feed') && !router.app.$store.state.username) {
+    if (['Account', 'Feed', 'Feeds'].includes(to.name) && !router.app.$store.state.username) {
       next({name: 'Login'}); // Go to Login page if user navigates to Account and are not signed in
       return;
     }

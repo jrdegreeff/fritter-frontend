@@ -3,7 +3,7 @@
     <section>
       <header>
         <h2 v-if="$store.state.feeds instanceof Map && $store.state.feeds.has($route.params.name)">
-          Viewing all freets in {{$route.params.name}} feed
+          Viewing all freets in feed {{$route.params.name}}
         </h2>
         <h2 v-else>
           Feed {{$route.params.name}} doesn't exist!
@@ -33,7 +33,7 @@ export default {
   name: 'HomePage',
   components: {UserTag, FreetComponent, CreateFreetForm},
   mounted() {
-    this.$store.commit('setTitle', {title: `${this.$route.params.name}`, enableBack: false});
+    this.$store.commit('setTitle', {title: `${this.$route.params.name}`, enableBack: true});
   },
 };
 </script>

@@ -9,7 +9,7 @@ const isFeedNameExists = async (req: Request, res: Response, next: NextFunction)
     const feed = await FeedCollection.findOne(req.session.userId, req.params.name);
     if (!feed) {
         res.status(404).json({
-            error: `Feed with name ${req.params.name} not found`
+            error: `feed with name ${req.params.name} not found`
         });
         return;
     }
@@ -24,7 +24,7 @@ const isFeedNameNotExists = async (req: Request, res: Response, next: NextFuncti
     const feed = await FeedCollection.findOne(req.session.userId, req.body.name);
     if (feed) {
         res.status(409).json({
-            error: `Feed with name ${req.body.name} already exists`
+            error: `feed with name ${req.body.name} already exists`
         });
         return;
     }
@@ -33,12 +33,14 @@ const isFeedNameNotExists = async (req: Request, res: Response, next: NextFuncti
 }
 
 /**
- *  Checks if req.body.name is non-empty
+ *  Checks if req.body.name is valid
  */
 const isValidFeedName = (req: Request, res: Response, next: NextFunction) => {
-    if (!req.body.name?.trim()) {
+    const valid = /^[A-Za-z0-9_\- ]+$/;
+    console.log(req.body.name)
+    if (!req.body.name?.trim().match(valid)) {
         res.status(400).json({
-            error: 'Feed name must be non-empty'
+            error: 'feed name can\'t be empty and can only contain letters, numbers, spaces, -, and _'
         });
         return;
     }
